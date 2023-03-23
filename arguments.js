@@ -51,23 +51,42 @@
 // // Pavlov says meow to Markov!
 // // true
 
-let curriedSum = function(numArgs) {
-    let args = [];
+// let curriedSum = function(numArgs) {
+//     let args = [];
+//     let curriedFunction = function (arg) {
+//         args.push(arg);
+//         if (args.length === numArgs) {
+//             let sum = 0
+//             args.forEach((num) => {
+//                 sum += num;
+//             })
+//             return sum;
+//         } else {
+//             return curriedFunction
+//         }
+//     }
+//     return curriedFunction
+// }
+
+// const sum = curriedSum(4);
+// console.log(sum(5)(30)(20)(1)); // => 56
+
+Function.prototype.curry = function(numArgs) {
+    const that = this;
+    let args = []; 
     let curriedFunction = function (arg) {
         args.push(arg);
         if (args.length === numArgs) {
-            let sum = 0
-            args.forEach((num) => {
-                sum += num;
-                
-            })
-            return sum;
+            return that.apply(that, [...args])
         } else {
-            return curriedFunction
+            return curriedFunction;
         }
     }
     return curriedFunction
 }
 
-const sum = curriedSum(4);
-console.log(sum(5)(30)(20)(1)); // => 56
+function sumThree(num1, num2, num3) {
+    return num1 + num2 + num3;
+}
+
+console.log(sumThree.curry(3)(4)(20)(6)); // == 30
